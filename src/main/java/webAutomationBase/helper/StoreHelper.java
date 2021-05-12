@@ -19,4 +19,21 @@ public enum StoreHelper {
     INSTANCE;
     Logger logger = LoggerFactory.getLogger(getClass());
     private static final String DIRECTORY_PATH = "elementValues";
+    ConcurrentMap<String, Object> elementMapList;
+
+    private void initMap(File[] fileList) {
+        elementMapList = new ConcurrentHashMap<>();
+        Type elementType = new TypeToken<List<ElementInfo>>(){}.getType();
+        Gson gson = new Gson();
+        List<ElementInfo> elementInfoList = null;
+        for (File file : fileList) {
+            try {
+                elementInfoList = gson.fromJson(new FileReader(file), elementType);
+                elementInfoList.parallelStream().forEach(elementInfo -> elementMapList.put(elementInfo.getKey(), elementInfo));
+            }
+            catch (FileNotFoundException e) {
+                logger.warn("{} not found", e);
+            }
+        }
+    }
 }
