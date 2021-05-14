@@ -19,6 +19,7 @@ public class ElementHelper
                 by = By.xpath(elementInfo.getValue());
             }
             return by;
+
         }catch (Exception e){
             return null;
         }
