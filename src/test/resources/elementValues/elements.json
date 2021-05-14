@@ -1,0 +1,7 @@
+[
+  {
+    "key": "aramaKutusu",
+    "value": "//input[@class='desktopOldAutosuggestTheme-input']",
+    "type": "xpath"
+  }
+]
