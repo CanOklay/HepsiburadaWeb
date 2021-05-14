@@ -1,11 +1,9 @@
 package webAutomationBase.helper;
-
 import webAutomationBase.model.ElementInfo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

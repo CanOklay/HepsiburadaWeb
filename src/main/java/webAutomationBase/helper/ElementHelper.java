@@ -8,7 +8,6 @@ public class ElementHelper
 
     public static By getElementInfoToBy(ElementInfo elementInfo) {
         By by = null;
-        try{
             if (elementInfo.getType().equals("css")) {
                 by = By.cssSelector(elementInfo.getValue());
             } else if (elementInfo.getType().equals("id")) {
@@ -19,8 +18,5 @@ public class ElementHelper
                 by = By.xpath(elementInfo.getValue());
             }
             return by;
-        }catch (Exception e){
-            return null;
-        }
     }
 }
