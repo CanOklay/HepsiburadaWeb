@@ -66,4 +66,12 @@ public enum StoreHelper {
         }
     }
 
+    public void saveValue(int key, ElementInfo value) {
+        elementInfoList.add(key, value);
+    }
+
+    public ElementInfo getValue(String key) {
+        return elementInfoList.get(0);
+    }
+
 }

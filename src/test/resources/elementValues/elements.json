@@ -1,5 +1,30 @@
 [
   {
+    "key": "loginListesi",
+    "value": "myAccount",
+    "type": "id"
+  },
+  {
+    "key": "login",
+    "value": "login",
+    "type": "id"
+  },
+  {
+    "key": "email",
+    "value": "txtUserName",
+    "type": "id"
+  },
+  {
+    "key": "password",
+    "value": "txtPassword",
+    "type": "id"
+  },
+  {
+    "key": "loginButonu",
+    "value": "btnLogin",
+    "type": "id"
+  },
+  {
     "key": "aramaKutusu",
     "value": "//input[@class='desktopOldAutosuggestTheme-input']",
     "type": "xpath"

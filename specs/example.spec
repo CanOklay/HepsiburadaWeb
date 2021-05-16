@@ -3,4 +3,4 @@
 
 Senaryo
 -------
-*Anasayfaya gidilir
+* Login olunur
