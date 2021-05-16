@@ -55,7 +55,6 @@ public enum StoreHelper {
     }
 
     public ElementInfo findElementInfoByKey(String key){
-        printAllValues();
         List<ElementInfo> results =  elementInfoList.stream()
                 .filter(elementInfo -> elementInfo.getKey()
                         .equals(key)).collect(Collectors.toList());

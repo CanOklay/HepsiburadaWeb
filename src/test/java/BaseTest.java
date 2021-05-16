@@ -34,7 +34,7 @@ public class BaseTest {
             options.addArguments("disable-translate");
             options.addArguments("--start-maximized");
             options.addArguments("--no-sandbox");
-            //options.addArguments("incognito");
+            options.addArguments("incognito");
 
             capabilities.setCapability(ChromeOptions.CAPABILITY, options);
             capabilities.setCapability("key", System.getenv("key"));

@@ -25,6 +25,11 @@
     "type": "id"
   },
   {
+    "key": "main",
+    "value": "a[title='Hepsiburada']",
+    "type": "css"
+  },
+  {
     "key": "aramaKutusu",
     "value": "//input[@class='desktopOldAutosuggestTheme-input']",
     "type": "xpath"

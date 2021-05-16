@@ -32,10 +32,10 @@ public class StepImplementation extends BaseTest {
     }
 
     public List<WebElement> findElementsByKey(String key) {
-        try{
+        try {
             return driver.findElements(ElementHelper.getElementInfoToBy(StoreHelper.INSTANCE.findElementInfoByKey(key)));
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Assert.fail("Element: '" + key + "' doesn't exist.");
             return null;
         }
@@ -70,30 +70,30 @@ public class StepImplementation extends BaseTest {
     @Step({"Wait for element to load with <key> and click",
             "Elementin yüklenmesini bekle ve tıkla <key>"})
     public void clickElementWithKeyIfExists(String key) {
-            try{
-                ElementInfo elementInfo = StoreHelper.INSTANCE.findElementInfoByKey(key);
-                By infoParam = ElementHelper.getElementInfoToBy(elementInfo);
+        try {
+            ElementInfo elementInfo = StoreHelper.INSTANCE.findElementInfoByKey(key);
+            By infoParam = ElementHelper.getElementInfoToBy(elementInfo);
 
-                WebDriverWait webDriverWait = new WebDriverWait(driver, 60);
-                WebElement webElement = webDriverWait
-                        .until(ExpectedConditions.elementToBeClickable(infoParam));
+            WebDriverWait webDriverWait = new WebDriverWait(driver, 60);
+            WebElement webElement = webDriverWait
+                    .until(ExpectedConditions.elementToBeClickable(infoParam));
 
-                ((JavascriptExecutor) driver).executeScript(
-                        "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'})",
-                        webElement);
-                webElement =  findElement(key);
-                if (webElement != null) {
-                    logger.info(key + " elementi bulundu.");
-                    actions.moveToElement(findElement(key));
-                    actions.click();
-                    actions.build().perform();
-                    logger.info(key + " elementine tıklandı.");
-                }
-            }catch (Exception e) {
-                logger.error(e.getMessage(), e);
-                Assert.fail("Element: '" + key + "' doesn't exist.");
+            ((JavascriptExecutor) driver).executeScript(
+                    "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'})",
+                    webElement);
+            webElement = findElement(key);
+            if (webElement != null) {
+                logger.info(key + " elementi bulundu.");
+                actions.moveToElement(findElement(key));
+                actions.click();
+                actions.build().perform();
+                logger.info(key + " elementine tıklandı.");
             }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            Assert.fail("Element: '" + key + "' doesn't exist.");
         }
+    }
 
     @Step({"Wait <value> milliseconds",
             "<long> milisaniye bekle"})
@@ -112,20 +112,32 @@ public class StepImplementation extends BaseTest {
         if (!key.equals("")) {
             findElement(key).sendKeys(text);
             logger.info(key + " elementine" + text + " texti yazıldı.");
-        }
-        else {
+        } else {
             logger.info(key + " elementine" + text + " texti yazılamadı.");
         }
     }
 
     @Step({"Hover element <key>",
             "<key> elementinin üzerine gidilir"})
-    public void hoverElement (String key) {
+    public void hoverElement(String key) {
         logger.info("Üstüne gelinen element :" + key);
         actions.moveToElement(findElement(key)).build().perform();
     }
 
 
+    @Step("Anasayfanın geldiği kontrol edilir <key>")
+    public void mainPageControl(String key) {
+        logger.info("Anasayfaya gelindi." + key);
+        String hepsiburadaText = driver.getTitle();
+        Assert.assertTrue(hepsiburadaText, true);
+    }
+
+    @Step({"Click <key> button",
+            "<key> butonuna tıkla"})
+    public void clickElement(String key) {
+        findElement(key).click();
+        logger.info("Tıklanan element: " + key);
+    }
 }
 
 
