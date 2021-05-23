@@ -16,6 +16,7 @@ import webAutomationBase.model.ElementInfo;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class StepImplementation extends BaseTest {
 
@@ -50,9 +51,8 @@ public class StepImplementation extends BaseTest {
             WebElement webElement = webDriverWait
                     .until(ExpectedConditions.presenceOfElementLocated(infoParam));
 
-            ((JavascriptExecutor) driver).executeScript(
-                    "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'})",
-                    webElement);
+            ((JavascriptExecutor) driver)
+                    .executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'})", webElement);
             return webElement;
         } catch (Exception e) {
             Assert.fail("Element: '" + key + "' doesn't exist.");
@@ -78,9 +78,8 @@ public class StepImplementation extends BaseTest {
             WebElement webElement = webDriverWait
                     .until(ExpectedConditions.elementToBeClickable(infoParam));
 
-            ((JavascriptExecutor) driver).executeScript(
-                    "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'})",
-                    webElement);
+            ((JavascriptExecutor) driver)
+                    .executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'})", webElement);
             webElement = findElement(key);
             if (webElement != null) {
                 logger.info(key + " elementi bulundu.");
@@ -137,6 +136,52 @@ public class StepImplementation extends BaseTest {
     public void clickElement(String key) {
         findElement(key).click();
         logger.info("Tıklanan element: " + key);
+    }
+
+
+    @Step({"<key> tablar listelenir ve <tab> tabının üzerine gelinir"})
+    public WebElement hoverElementBy(String key, String tab) {
+        List<WebElement> webElements = findElementsByKey(key);
+        webElements.stream().filter(element ->
+                element.getText().equals(tab)).collect(Collectors.toList());
+        try{
+            WebElement element = webElements.get(0);
+            logger.info("Üstüne gelinen element :" + element);
+            actions.moveToElement(element).build().perform();
+            return webElements.get(0);
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    @Step({"<tab> tabına tıklanır, butikler <boutique> gelmiyorsa log basılır"})
+    public void clickTab(String tab, String boutique) {
+        findElement(tab).click();
+        List<WebElement> imageList = findElementsByKey(boutique);
+
+        if (imageList.size() > 0) {
+            logger.info("Butikler yüklendi!");
+        } else {
+            logger.info("Butikler yüklenemedi!");
+        }
+    }
+
+    @Step("Gomlek tabına tıklandıktan sonra rastgele bir butik <boutique> seçilir")
+    public void randomClickBoutique(String boutique) {
+        List<WebElement> boutiqueList = findElementsByKey(boutique);
+        int randomBoutique = randomNumber(0, boutiqueList.size());
+
+        WebElement getBoutique = boutiqueList.get(randomBoutique);
+        getBoutique.click();
+    }
+
+    @Step("Rastgele bir ürün görseline <image> tıklanır")
+    public void randomClickImage(String image) {
+        List<WebElement> imageList = findElementsByKey(image);
+        int randomImageNumber = randomNumber(0, imageList.size());
+
+        WebElement getImage = imageList.get(randomImageNumber);
+        getImage.click();
     }
 }
 
