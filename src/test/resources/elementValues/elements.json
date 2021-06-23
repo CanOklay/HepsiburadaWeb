@@ -31,7 +31,22 @@
   },
   {
     "key": "aramaKutusu",
-    "value": "//input[@class='desktopOldAutosuggestTheme-input']",
+    "value": "div[role='combobox'] > input[type='text']",
+    "type": "css"
+  },
+  {
+    "key": "aramaButonu",
+    "value": "div[class='SearchBoxOld-buttonContainer']",
+    "type": "css"
+  },
+  {
+    "key": "telefon",
+    "value": "//*[@id=\"categoryList\"]/li[2]/label",
+    "type": "xpath"
+  },
+  {
+    "key": "cepTelefonu",
+    "value": "//*[@id=\"categoryList\"]/li[4]/label",
     "type": "xpath"
   },
   {

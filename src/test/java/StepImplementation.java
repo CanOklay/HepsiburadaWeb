@@ -134,8 +134,22 @@ public class StepImplementation extends BaseTest {
     @Step({"Click <key> button",
             "<key> butonuna tıkla"})
     public void clickElement(String key) {
-        findElement(key).click();
-        logger.info("Tıklanan element: " + key);
+        try{
+            ElementInfo elementInfo = StoreHelper.INSTANCE.findElementInfoByKey(key);
+            By infoParam = ElementHelper.getElementInfoToBy(elementInfo);
+
+            WebDriverWait webDriverWait = new WebDriverWait(driver, 60);
+            WebElement webElement = webDriverWait
+                    .until(ExpectedConditions.elementToBeClickable(infoParam));
+            ((JavascriptExecutor) driver)
+                    .executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'})", webElement);
+            webElement = findElement(key);
+            webElement.click();
+            //findElement(key).click();
+        }catch (Exception e) {
+            logger.info("Element bulunamadı: " + key);
+            e.getStackTrace();
+        }
     }
 
 
