@@ -152,6 +152,10 @@ public class StepImplementation extends BaseTest {
         }
     }
 
+    @Step({"<key> elementindeki ürünler kontrol edilir"})
+    public void controlProducts(String key) {
+        List<WebElement> webElements = findElementsByKey(key);
+    }
 
     @Step({"<key> tablar listelenir ve <tab> tabının üzerine gelinir"})
     public WebElement hoverElementBy(String key, String tab) {
