@@ -35,20 +35,19 @@ public class BaseTest {
             options.addArguments("disable-translate");
             options.addArguments("--start-maximized");
             options.addArguments("--no-sandbox");
-            // options.addArguments("incognito");
+            options.addArguments("incognito");
 
             capabilities.setCapability(ChromeOptions.CAPABILITY, options);
             capabilities.setCapability("key", System.getenv("key"));
 
         } else {
-
             Map<String, Object> prefs = new HashMap<String, Object>();
             prefs.put("profile.default_content_setting_values.notifications", 2);
 
             ChromeOptions options = new ChromeOptions();
             System.setProperty("webdriver.chrome.driver", "driver/chromedriver");
 
-            //      options.addArguments("--kiosk");//FULLSCREEN FOR MAC
+            options.addArguments("--kiosk");//FULLSCREEN FOR MAC
             options.addArguments("incognito");
             driver = new ChromeDriver(options);
             driver.manage().window().maximize();
@@ -59,13 +58,11 @@ public class BaseTest {
 
     @BeforeStep
     public void beforeStep(ExecutionContext executionContext){
-
         logger.info(executionContext.getCurrentStep().getDynamicText());
     }
 
     @AfterStep
     public void afterStep(ExecutionContext executionContext){
-
         if (executionContext.getCurrentStep().getIsFailing()) {
             logger.error(executionContext.getCurrentScenario().getName());
             logger.error(executionContext.getCurrentStep().getDynamicText());
@@ -76,7 +73,6 @@ public class BaseTest {
 
     @AfterScenario
     public void tearDown(){
-
         driver.quit();
     }
 }

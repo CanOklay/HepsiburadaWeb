@@ -119,13 +119,8 @@ public class StepImplementation extends BaseTest {
     @Step({"Hover element <key>",
             "<key> elementinin üzerine gidilir"})
     public void hoverElement(String key) {
-        try{
-            actions.moveToElement(findElement(key)).build().perform();
-            logger.info("Üstüne gelinen element :" + key);
-        }catch (Exception e) {
-            e.getMessage();
-        }
-
+        logger.info("Üstüne gelinen element :" + key);
+        actions.moveToElement(findElement(key)).build().perform();
     }
 
 
@@ -155,12 +150,6 @@ public class StepImplementation extends BaseTest {
             logger.info("Element bulunamadı: " + key);
             e.getStackTrace();
         }
-    }
-
-    @Step({"<key> içinde ürünlerin geldiği kontrol edilir"})
-    public void controlProducts(String key) {
-        List<WebElement> webElements = findElementsByKey(key);
-
     }
 
 

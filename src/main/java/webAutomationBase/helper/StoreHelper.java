@@ -1,11 +1,9 @@
 package webAutomationBase.helper;
-
 import webAutomationBase.model.ElementInfo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -24,22 +22,6 @@ public enum StoreHelper {
     StoreHelper() {
         initMap(getFileList());
     }
-
-    /*private void initMap(File[] fileList) {
-        elementMapList = new ConcurrentHashMap<>();
-        Type elementType = new TypeToken<List<ElementInfo>>(){}.getType();
-        Gson gson = new Gson();
-        List<ElementInfo> elementInfoList = null;
-        for (File file : fileList) {
-            try {
-                elementInfoList = gson.fromJson(new FileReader(file), elementType);
-                elementInfoList.parallelStream().forEach(elementInfo -> elementMapList.put(elementInfo.getKey(), elementInfo));
-            }
-            catch (FileNotFoundException e) {
-                logger.warn("{} not found", e);
-            }
-        }
-    }*/
 
     private void initMap(File[] fileList) {
         elementInfoList = new ArrayList<>();
@@ -73,7 +55,6 @@ public enum StoreHelper {
     }
 
     public ElementInfo findElementInfoByKey(String key){
-        printAllValues();
         List<ElementInfo> results =  elementInfoList.stream()
                 .filter(elementInfo -> elementInfo.getKey()
                         .equals(key)).collect(Collectors.toList());
@@ -82,6 +63,14 @@ public enum StoreHelper {
         }catch (Exception e){
             return null;
         }
+    }
+
+    public void saveValue(int key, ElementInfo value) {
+        elementInfoList.add(key, value);
+    }
+
+    public ElementInfo getValue(String key) {
+        return elementInfoList.get(0);
     }
 
 }
