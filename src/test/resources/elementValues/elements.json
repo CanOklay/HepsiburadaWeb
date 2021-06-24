@@ -50,33 +50,28 @@
     "type": "xpath"
   },
   {
-  "key": "moda",
-  "value": "//span[@class='sf-MenuItems-5_2RN']//span[text()=\"Moda\"]",
-  "type": "xpath"
-  },
-  {
-    "key": "gömlek",
-    "value": "//a[@class='sf-ChildMenuItems-3R6bj item-947']//span[text()=\"Gömlek\"]",
+    "key": "samsungSonuçlar",
+    "value": "//ul[@class='product-list results-container do-flex list']//li",
     "type": "xpath"
   },
   {
-    "key": "butikler",
-    "value": "//li[@class='productListContainer-item']//img",
-    "type": "xpath"
+    "key": "ikinciSayfa",
+    "value": ".page-2",
+    "type": "css"
   },
   {
-    "key": "sepeteEkle",
-    "value": "addToCart",
-    "type": "id"
+    "key": "beğen",
+    "value": ".Like-3B4x5",
+    "type": "css"
   },
   {
-    "key": "sepeteGit",
-    "value": "//div[@class='checkoutui-SalesFrontCash-m5Re7']//button[(text()=\"Sepete git\")]",
-    "type": "xpath"
+    "key": "listeyeEklendiPopup",
+    "value": ".hb-toast-text",
+    "type": "css"
   },
   {
-    "key": "tablar",
-    "value": "//ul[@class='sf-MenuItems-1Sj7h']/li",
-    "type": "xpath"
+    "key": "beğendiklerim",
+    "value": "a[title='Beğendiklerim']",
+    "type": "css"
   }
 ]

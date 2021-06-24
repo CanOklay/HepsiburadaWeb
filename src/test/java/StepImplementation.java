@@ -90,7 +90,7 @@ public class StepImplementation extends BaseTest {
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            Assert.fail("Element: '" + key + "' doesn't exist.");
+            Assert.fail("Element: '" + key + "' bulunamadı.");
         }
     }
 
@@ -145,16 +145,66 @@ public class StepImplementation extends BaseTest {
                     .executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'})", webElement);
             webElement = findElement(key);
             webElement.click();
-            //findElement(key).click();
         }catch (Exception e) {
-            logger.info("Element bulunamadı: " + key);
-            e.getStackTrace();
+            logger.error(e.getMessage(), e);
+            Assert.fail("Element: '" + key + "' bulunamadı.");
         }
     }
 
     @Step({"<key> elementindeki ürünler kontrol edilir"})
-    public void controlProducts(String key) {
+    public List<WebElement> controlProducts(String key) {
         List<WebElement> webElements = findElementsByKey(key);
+        if(!webElements.isEmpty()) {
+            logger.info("Element sayısı: " + webElements.size());
+            return webElements;
+        }
+        else {
+            Assert.fail("Elementler: '" + key + "' bulunamadı.");
+            return null;
+        }
+    }
+
+    @Step({"<key> elementindeki ürün kontrol edilir"})
+    public List<WebElement> controlProduct(String key) {
+        List<WebElement> webElements = findElementsByKey(key);
+        if(!webElements.isEmpty()) {
+            logger.info("Element sayısı: " + webElements.size());
+            WebElement selectedElement = webElements.get(0);
+            logger.info("Seçtiğimiz element : " + selectedElement);
+            return (List<WebElement>) selectedElement;
+        }
+        else {
+            Assert.fail("Elementler: '" + key + "' bulunamadı.");
+            return null;
+        }
+    }
+
+    @Step({"<key> elementinde <productNo> ürünü seçilir"})
+    public WebElement clickByProductNumber(String key, int productNo) {
+        try{
+            List<WebElement> webElements = findElementsByKey(key);
+            WebElement element = webElements.get(productNo);
+            if (element != null) {
+                logger.info(key + " elementi bulundu.");
+                actions.moveToElement(findElement(key));
+                actions.click();
+                actions.build().perform();
+                logger.info(key + " elementine tıklandı.");
+                logger.info("Element seçildi: " + element);
+                return element;
+            }
+        }catch (Exception e){
+            logger.error(e.getMessage(), e);
+            Assert.fail("Element: '" + key + "' bulunamadı.");
+        }
+        return null;
+    }
+
+    @Step({"<key> popup kontrolü yapılır"})
+    public void popupControl(String key) {
+        String popupText = findElement(key).getText();
+        logger.info("Popup: " + popupText);
+        Assert.assertEquals("Ürün listenize eklendi.", popupText);
     }
 
     @Step({"<key> tablar listelenir ve <tab> tabının üzerine gelinir"})
