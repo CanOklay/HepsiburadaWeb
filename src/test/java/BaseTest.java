@@ -38,11 +38,12 @@ public class BaseTest {
             options.addArguments("incognito");
 
             capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-            capabilities.setCapability("key", System.getenv("key"));
+            capabilities.setCapability("key", getenv("key"));
 
         } else {
             Map<String, Object> prefs = new HashMap<String, Object>();
             prefs.put("profile.default_content_setting_values.notifications", 2);
+            prefs.put("profile.default_content_setting_values.cookies", 2);
 
             ChromeOptions options = new ChromeOptions();
             System.setProperty("webdriver.chrome.driver", "driver/chromedriver");
