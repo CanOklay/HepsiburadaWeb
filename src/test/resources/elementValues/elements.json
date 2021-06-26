@@ -73,5 +73,56 @@
     "key": "beğendiklerim",
     "value": "a[title='Beğendiklerim']",
     "type": "css"
+  },
+  {
+    "key": "beğendiklerimListesi",
+    "value": ".product-list",
+    "type": "css"
+  },
+  {
+    "key": "ürün",
+    "value": ".product-item > div",
+    "type": "css"
+  },
+  {
+    "key": "sepeteEkle",
+    "value": "addToCart",
+    "type": "id"
+  },
+  {
+    "key": "sepeteEklendiPopup",
+    "value": ".checkoutui-SalesFrontCash-XeG2a",
+    "type": "css"
+  },
+  {
+    "key": "sepeteGit",
+    "value": "//button[contains(text(), 'Sepete git')]",
+    "type": "xpath"
+  },
+  {
+    "key": "sepeteEkle2",
+    "value": "div[class='checkoutui-recommendedProduct-2kyNO']",
+    "type": "css"
+  },
+  {
+    "key": "kapatmaButonu",
+    "value": ".checkoutui-Modal-2iZXl",
+    "type": "css"
+  },
+  {
+    "key": "sepetim",
+    "value": ".shoppingCart",
+    "type": "id"
+  },
+  {
+    "key": "ürünüKaldır",
+    "value": ".product_delete_1zR-0",
+    "type": "css"
+  },
+  {
+    "key": "sepetKontrol",
+    "value": "//div[@class='content_Z9h8v']//h1[contains(text(),'Sepetin şu an boş')]",
+    "type": "xpath"
   }
+
 ]

@@ -25,6 +25,7 @@ public class StepImplementation extends BaseTest {
     private static Log4jLoggerAdapter logger = (Log4jLoggerAdapter) LoggerFactory
             .getLogger(StepImplementation.class);
     private Actions actions = new Actions(driver);
+    WebDriverWait webDriverWait = new WebDriverWait(driver, 60);
 
     public StepImplementation() {
 
@@ -34,10 +35,16 @@ public class StepImplementation extends BaseTest {
 
     public List<WebElement> findElementsByKey(String key) {
         try {
-            return driver.findElements(ElementHelper.getElementInfoToBy(StoreHelper.INSTANCE.findElementInfoByKey(key)));
+            ElementInfo elementInfo = StoreHelper.INSTANCE.findElementInfoByKey(key);
+            By infoParam = ElementHelper.getElementInfoToBy(elementInfo);
 
+            WebElement webElement = webDriverWait
+                    .until(ExpectedConditions.presenceOfElementLocated(infoParam));
+            ((JavascriptExecutor) driver)
+                    .executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'})", webElement);
+            return driver.findElements(ElementHelper.getElementInfoToBy(StoreHelper.INSTANCE.findElementInfoByKey(key)));
         } catch (Exception e) {
-            Assert.fail("Element: '" + key + "' doesn't exist.");
+            Assert.fail("Element: '" + key + "' bulunamadı.");
             return null;
         }
     }
@@ -46,16 +53,13 @@ public class StepImplementation extends BaseTest {
         try {
             ElementInfo elementInfo = StoreHelper.INSTANCE.findElementInfoByKey(key);
             By infoParam = ElementHelper.getElementInfoToBy(elementInfo);
-
-            WebDriverWait webDriverWait = new WebDriverWait(driver, 60);
             WebElement webElement = webDriverWait
                     .until(ExpectedConditions.presenceOfElementLocated(infoParam));
-
             ((JavascriptExecutor) driver)
                     .executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'})", webElement);
             return webElement;
         } catch (Exception e) {
-            Assert.fail("Element: '" + key + "' doesn't exist.");
+            Assert.fail("Element: '" + key + "' bulunamadı.");
             return null;
         }
     }
@@ -73,8 +77,6 @@ public class StepImplementation extends BaseTest {
         try {
             ElementInfo elementInfo = StoreHelper.INSTANCE.findElementInfoByKey(key);
             By infoParam = ElementHelper.getElementInfoToBy(elementInfo);
-
-            WebDriverWait webDriverWait = new WebDriverWait(driver, 60);
             WebElement webElement = webDriverWait
                     .until(ExpectedConditions.elementToBeClickable(infoParam));
 
@@ -119,10 +121,15 @@ public class StepImplementation extends BaseTest {
     @Step({"Hover element <key>",
             "<key> elementinin üzerine gidilir"})
     public void hoverElement(String key) {
-        logger.info("Üstüne gelinen element :" + key);
-        actions.moveToElement(findElement(key)).build().perform();
-    }
+        try{
+            logger.info("Üstüne gelinen element :" + key);
+            actions.moveToElement(findElement(key)).build().perform();
+        }catch (Exception e) {
+            logger.error(e.getMessage());
+            Assert.fail("Element: '" + key + "' bulunamadı.");
+        }
 
+    }
 
     @Step("Anasayfanın geldiği kontrol edilir <key>")
     public void mainPageControl(String key) {
@@ -137,8 +144,6 @@ public class StepImplementation extends BaseTest {
         try{
             ElementInfo elementInfo = StoreHelper.INSTANCE.findElementInfoByKey(key);
             By infoParam = ElementHelper.getElementInfoToBy(elementInfo);
-
-            WebDriverWait webDriverWait = new WebDriverWait(driver, 60);
             WebElement webElement = webDriverWait
                     .until(ExpectedConditions.elementToBeClickable(infoParam));
             ((JavascriptExecutor) driver)
@@ -165,18 +170,36 @@ public class StepImplementation extends BaseTest {
     }
 
     @Step({"<key> elementindeki ürün kontrol edilir"})
-    public List<WebElement> controlProduct(String key) {
+    public WebElement controlProduct(String key) {
         List<WebElement> webElements = findElementsByKey(key);
         if(!webElements.isEmpty()) {
             logger.info("Element sayısı: " + webElements.size());
             WebElement selectedElement = webElements.get(0);
-            logger.info("Seçtiğimiz element : " + selectedElement);
-            return (List<WebElement>) selectedElement;
+            logger.info("Seçtiğimiz element: " + selectedElement);
+            return selectedElement;
         }
         else {
-            Assert.fail("Elementler: '" + key + "' bulunamadı.");
+            Assert.fail("Element: '" + key + "' bulunamadı.");
             return null;
         }
+    }
+
+    @Step({"Sepette <key> ürün olmadığı kontrol edilir"})
+    public void controlShoppingCart(String key) {
+        String element = findElement(key).getText();
+        if(element == "Sepetin şu an boş") {
+            logger.info("Sepette ürün bulunmuyor.");
+        }
+        else {
+            Assert.fail("Sepette ürün bulundu.");
+        }
+    }
+
+    @Step({"<key> sayfa sayısının <pageNo> olduğu kontrol edilir"})
+    public void pageControl(String key, String pageNo) {
+        String pageNumber = findElement(key).getText();
+        Assert.assertEquals(pageNo, pageNumber);
+        logger.info("Sayfa numarasının " + pageNo + " olduğu kontrol edildi.");
     }
 
     @Step({"<key> elementinde <productNo> ürünü seçilir"})
@@ -200,56 +223,33 @@ public class StepImplementation extends BaseTest {
         return null;
     }
 
-    @Step({"<key> popup kontrolü yapılır"})
-    public void popupControl(String key) {
+    @Step({"<key> popupında <message> yazdığı kontrol edilir"})
+    public void popupControl(String key, String message) {
         String popupText = findElement(key).getText();
         logger.info("Popup: " + popupText);
-        Assert.assertEquals("Ürün listenize eklendi.", popupText);
+        Assert.assertEquals(message, popupText);
     }
 
-    @Step({"<key> tablar listelenir ve <tab> tabının üzerine gelinir"})
-    public WebElement hoverElementBy(String key, String tab) {
-        List<WebElement> webElements = findElementsByKey(key);
-        webElements.stream().filter(element ->
-                element.getText().equals(tab)).collect(Collectors.toList());
-        try{
-            WebElement element = webElements.get(0);
-            logger.info("Üstüne gelinen element :" + element);
-            actions.moveToElement(element).build().perform();
-            return webElements.get(0);
-        }catch (Exception e){
-            return null;
+    @Step({"<key> popupı kontrol edilir ve <sepeteGit> butonuna tıklanır. Eğer ürün bulunamadıysa başka mağazadan sepete <sepeteEkle2> eklenir <kapatma> ve sepete gidilir <sepeteGit2>"})
+    public void popupControlAndClick(String key, String sepeteGit, String sepeteEkle2, String kapatma, String sepeteGit2) {
+        String popupText = findElement(key).getText();
+        logger.info("Popup: " + popupText);
+        //Assert.assertEquals(message, popupText);
+        if(popupText.equals("Ürün sepetinizde")) {
+            logger.info("Sepete git " + sepeteGit + " butonu bulundu.");
+            clickElement(sepeteGit);
+            logger.info("Sepete git " + sepeteGit + " butonuna tıklandı.");
         }
-    }
-
-    @Step({"<tab> tabına tıklanır, butikler <boutique> gelmiyorsa log basılır"})
-    public void clickTab(String tab, String boutique) {
-        findElement(tab).click();
-        List<WebElement> imageList = findElementsByKey(boutique);
-
-        if (imageList.size() > 0) {
-            logger.info("Butikler yüklendi!");
-        } else {
-            logger.info("Butikler yüklenemedi!");
+        else {
+            Assert.assertEquals("Ürün sepete eklenemedi", popupText);
+            logger.info("Sepete ekle " + sepeteEkle2 + " butonu bulundu.");
+            clickElement(sepeteEkle2);
+            logger.info("Sepete ekle " + sepeteEkle2 + " butonuna tıklandı.");
+            clickElement(kapatma);
+            logger.info("Kapatma " + kapatma + " butonuna tıklandı.");
+            clickElementWithKeyIfExists(sepeteGit2);
+            logger.info("Sepetim " + sepeteGit2 + " butonuna tıklandı.");
         }
-    }
-
-    @Step("Gomlek tabına tıklandıktan sonra rastgele bir butik <boutique> seçilir")
-    public void randomClickBoutique(String boutique) {
-        List<WebElement> boutiqueList = findElementsByKey(boutique);
-        int randomBoutique = randomNumber(0, boutiqueList.size());
-
-        WebElement getBoutique = boutiqueList.get(randomBoutique);
-        getBoutique.click();
-    }
-
-    @Step("Rastgele bir ürün görseline <image> tıklanır")
-    public void randomClickImage(String image) {
-        List<WebElement> imageList = findElementsByKey(image);
-        int randomImageNumber = randomNumber(0, imageList.size());
-
-        WebElement getImage = imageList.get(randomImageNumber);
-        getImage.click();
     }
 }
 
