@@ -27,6 +27,7 @@ public class BaseTest {
         String baseUrl = "https://www.hepsiburada.com";
 
         DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+
         if (StringUtils.isNotEmpty(getenv("key"))) {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("test-type");
@@ -36,6 +37,9 @@ public class BaseTest {
             options.addArguments("--start-maximized");
             options.addArguments("--no-sandbox");
             options.addArguments("incognito");
+            Map<String, Object> prefs = new HashMap<String, Object>();
+            prefs.put("profile.default_content_setting_values.notifications", 2);
+            prefs.put("profile.default_content_setting_values.cookies", 2);
 
             capabilities.setCapability(ChromeOptions.CAPABILITY, options);
             capabilities.setCapability("key", getenv("key"));
@@ -64,6 +68,7 @@ public class BaseTest {
 
     @AfterStep
     public void afterStep(ExecutionContext executionContext){
+        Gauge.captureScreenshot();
         if (executionContext.getCurrentStep().getIsFailing()) {
             logger.error(executionContext.getCurrentScenario().getName());
             logger.error(executionContext.getCurrentStep().getDynamicText());
