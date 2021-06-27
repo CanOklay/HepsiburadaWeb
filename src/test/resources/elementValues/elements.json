@@ -121,7 +121,7 @@
   },
   {
     "key": "sepetKontrol",
-    "value": "//div[@class='content_Z9h8v']//h1[contains(text(),'Sepetin şu an boş')]",
+    "value": "//div[@class='content_Z9h8v']//h1",
     "type": "xpath"
   }
 

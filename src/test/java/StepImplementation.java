@@ -12,23 +12,18 @@ import org.slf4j.impl.Log4jLoggerAdapter;
 import webAutomationBase.helper.ElementHelper;
 import webAutomationBase.helper.StoreHelper;
 import webAutomationBase.model.ElementInfo;
-
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 public class StepImplementation extends BaseTest {
 
-    private static final int DEFAULT_MAX_ITERATION_COUNT = 75;
-    private static final int DEFAULT_MILLISECOND_WAIT_AMOUNT = 200;
     private static Log4jLoggerAdapter logger = (Log4jLoggerAdapter) LoggerFactory
             .getLogger(StepImplementation.class);
     private Actions actions = new Actions(driver);
     WebDriverWait webDriverWait = new WebDriverWait(driver, 60);
 
     public StepImplementation() {
-
         PropertyConfigurator
                 .configure(StepImplementation.class.getClassLoader().getResource("log4j.properties"));
     }
@@ -187,7 +182,8 @@ public class StepImplementation extends BaseTest {
     @Step({"Sepette <key> ürün olmadığı kontrol edilir"})
     public void controlShoppingCart(String key) {
         String element = findElement(key).getText();
-        if(element == "Sepetin şu an boş") {
+        logger.info("Sepet durumu: " + element);
+        if(element.equals("Sepetin şu an boş")) {
             logger.info("Sepette ürün bulunmuyor.");
         }
         else {
