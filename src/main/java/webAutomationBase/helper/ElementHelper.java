@@ -1,11 +1,9 @@
 package webAutomationBase.helper;
-
 import webAutomationBase.model.ElementInfo;
 import org.openqa.selenium.By;
 
 public class ElementHelper
 {
-
     public static By getElementInfoToBy(ElementInfo elementInfo) {
         By by = null;
         try{
