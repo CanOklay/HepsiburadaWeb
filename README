@@ -1,1 +1,2 @@
 - BDD framework'ü olan Gauge'i kullandım ve kendi raporlama ekranı olduğu için Extend Reports kullanmadım.
+Gauge raporlama ekranına projeyi çalıştırdıktan sonra logların altında yer alan html-reports uzantısını bir tarayıcıya yazdığınızda görebilirsiniz.
